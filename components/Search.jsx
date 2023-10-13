@@ -26,7 +26,7 @@ export default function Search() {
     if (!validUrl(url)) return;
     const newUrl = url.replaceAll("/", "%~%");
     console.log(newUrl, url);
-    fetch(`http://127.0.0.1:8000/api/url/${newUrl}`)
+    fetch(`https://isdown-eccb.onrender.com/api/url/${newUrl}`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
