@@ -13,12 +13,36 @@ export default function Search() {
   const [result, setResult] = useState(false);
   const [data, setData] = useState(null);
 
+  const validUrl = (url) => {
+    const regex = /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/gm;
+    if (!regex.test(url)) {
+      setError("Please enter a valid URL");
+      return false;
+    }
+    return true;
+  };
+
+  const checkStatus = (url) => {
+    if (!validUrl(url)) return;
+    const newUrl = url.replaceAll("/", "%~%");
+    console.log(newUrl, url);
+    fetch(`http://127.0.0.1:8000/api/url/${newUrl}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    setData(serverReport(url));
+    // setData(serverReport(url));
     setTimeout(() => {
       setLoading(false);
+      checkStatus(url);
       setResult(true);
     }, 2000);
   };
